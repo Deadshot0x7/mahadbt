@@ -1,26 +1,29 @@
-from telegram.ext import Updater, InlineQueryHandler, CommandHandler
-import requests
-import re
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, CallbackContext
+import time as t
 
-def get_url():
-    contents = requests.get('https://random.dog/woof.json').json()    
-    url = contents['url']
-    return url 
 
-def bop(bot, update):
-    url = get_url()
-    chat_id = update.message.chat_id
-    bot.send_photo(chat_id=chat_id, photo=url)
-    bot.send_message("Hello")
-    print("Hello")
+def hello(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text(f'Hello {update.effective_user.first_name}')
+
+def b(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text("Bye ahmed ,Take care of yourselevs")
     
+updater = Updater('1849563775:AAGGX0GCema6OelGZprpu6AdwjzyoWfeULQ')
 
-    
+def chat(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text('hello Ahmed , Its mantasha over here')
+    t.sleep(10)
+    update.message.reply_text("I hope you're doing well without me ")
+    t.sleep(10)
+    update.message.reply_text(" Yeah the world is really confusing but we should stay with foucsed on our golas ")
+    update.message.reply_text(" We should listen to our parent and we should wear nice clothes  ")
 
-if __name__ == '__main__':
-    updater = Updater('1849563775:AAGGX0GCema6OelGZprpu6AdwjzyoWfeULQ')
-    dp = updater.dispatcher
-    dp.add_handler(CommandHandler('bop',bop))
-    updater.start_polling()
-    updater.idle()
-    
+
+
+
+updater.dispatcher.add_handler(CommandHandler('hello', hello))
+updater.dispatcher.add_handler(CommandHandler('bye',b))
+updater.dispatcher.add_handler(CommandHandler('chatbot',chat))
+updater.start_polling()
+updater.idle()
