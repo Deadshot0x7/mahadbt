@@ -4,7 +4,10 @@ import time as t
 import os as s 
 from response import *
 
-
+updater.start_webhook(listen="0.0.0.0",
+                          port=int(PORT),
+                          url_path=TOKEN)
+updater.bot.setWebhook('https://mahatbtbot.herokuapp.com/' + TOKEN)
 
 t.sleep(2)
 print("Bot has been started")
