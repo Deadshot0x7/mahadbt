@@ -14,7 +14,7 @@ def main():
     updater.dispatcher.add_handler(CommandHandler('hello', hello))
     updater.dispatcher.add_handler(CommandHandler('bye',b))
     updater.dispatcher.add_handler(CommandHandler('chatbot',chat))
-    updater.dispatcher.add_handler(CommandHandler('start',start))
+    updater.dispatcher.add_handler(CommandHandler('start',s))
 
  def hello(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(f'Hello {update.effective_user.first_name}')
@@ -32,7 +32,7 @@ def chat(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(" Yeah the world is really confusing but we should stay with foucsed on our golas ")
     update.message.reply_text(" We should listen to our parent and we should wear nice clothes  ")
 
-def start(update:Update,content: CallbackContext) -> None:
+def s(update:Update,content: CallbackContext) -> None:
 
     update.message.reply_text("this Bot is Currently In development phase ")
     
