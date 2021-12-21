@@ -1,55 +1,69 @@
-from telegram import Update
-from telegram.ext import Updater, CommandHandler, CallbackContext
+"""
+Simple Bot to reply to Telegram messages taken from the python-telegram-bot examples.
+Deployed using heroku.
+Author: liuhh02 https://medium.com/@liuhh02
+"""
+
+import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+import os
+PORT = int(os.environ.get('PORT', 5000))
 
-import os as s 
-from response import *
+# Enable logging
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.INFO)
 
-PORT = int(s.environ.get('PORT', 5000))
-TOKEN : '1849563775:AAGGX0GCema6OelGZprpu6AdwjzyoWfeULQ'
+logger = logging.getLogger(__name__)
+TOKEN = '1849563775:AAGGX0GCema6OelGZprpu6AdwjzyoWfeULQ'
+
+# Define a few command handlers. These usually take the two arguments update and
+# context. Error handlers also receive the raised TelegramError object in error.
+def start(update, context):
+    """Send a message when the command /start is issued."""
+    update.message.reply_text('Hi!')
+
+def help(update, context):
+    """Send a message when the command /help is issued."""
+    update.message.reply_text('Help!')
+
+def echo(update, context):
+    """Echo the user message."""
+    update.message.reply_text(update.message.text)
+
+def error(update, context):
+    """Log Errors caused by Updates."""
+    logger.warning('Update "%s" caused error "%s"', update, context.error)
 
 def main():
-     updater = Updater(TOKEN, use_context=True)
-     dp = updater.dispatcher
-     updater.dispatcher.add_handler(CommandHandler('hello', hello))
-     updater.dispatcher.add_handler(CommandHandler('bye',b))
-     updater.dispatcher.add_handler(CommandHandler('chatbot',chat))
-     updater.dispatcher.add_handler(CommandHandler('start',s))
+    """Start the bot."""
+    # Create the Updater and pass it your bot's token.
+    # Make sure to set use_context=True to use the new context based callbacks
+    # Post version 12 this will no longer be necessary
+    updater = Updater(TOKEN, use_context=True)
 
+    # Get the dispatcher to register handlers
+    dp = updater.dispatcher
 
+    # on different commands - answer in Telegram
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("help", help))
 
+    # on noncommand i.e message - echo the message on Telegram
+    dp.add_handler(MessageHandler(Filters.text, echo))
 
- def hello(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text(f'Hello {update.effective_user.first_name}')
+    # log all errors
+    dp.add_error_handler(error)
 
-def b(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text("Bye ahmed ,Take care of yourselevs")
-    
-
-    
-
-def chat(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text('hello Ahmed , Its mantasha over here')
-    update.message.reply_text("I hope you're doing well without me ")
-
-    update.message.reply_text(" Yeah the world is really confusing but we should stay with foucsed on our golas ")
-    update.message.reply_text(" We should listen to our parent and we should wear nice clothes  ")
-
-def s(update:Update,content: CallbackContext) -> None:
-
-    update.message.reply_text("this Bot is Currently In development phase ")
-    
-    update.message.reply_text("Soon this Bot will be functional")
-
-updater.idle()
-updater.start_webhook(listen="0.0.0.0",
+    # Start the Bot
+    updater.start_webhook(listen="0.0.0.0",
                           port=int(PORT),
                           url_path=TOKEN)
-updater.bot.setWebhook('https://mahatbtbot.herokuapp.com/' + TOKEN)
+    updater.bot.setWebhook('https://mahatbtbot.herokuapp.com/' + TOKEN)
 
+    # Run the bot until you press Ctrl-C or the process receives SIGINT,
+    # SIGTERM or SIGABRT. This should be used most of the time, since
+    # start_polling() is non-blocking and will stop the bot gracefully.
+    updater.idle()
 
 if __name__ == '__main__':
     main()
-    
-
-
