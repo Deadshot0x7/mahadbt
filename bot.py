@@ -18,9 +18,10 @@ updater.dispatcher.add_handler(CommandHandler('hello', hello))
 updater.dispatcher.add_handler(CommandHandler('bye',b))
 updater.dispatcher.add_handler(CommandHandler('chatbot',chat))
 updater.dispatcher.add_handler(CommandHandler('start',start))
-updater.start_polling()
+
 updater.idle()
 
-
+if __name__ == '__main__':
+    main()
 
 
