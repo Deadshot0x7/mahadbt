@@ -28,6 +28,10 @@ def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
+def mantasha (update, context):
+
+    update.message.reply_text ('Hello Ahmed , I hope youre doing well today ')
+
 def main():
     """Start the bot."""
     # Create the Updater and pass it your bot's token.
